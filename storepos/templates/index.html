@@ -1,0 +1,43 @@
+{% load staticfiles %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" name="viewpor" content="width=device-width">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-theme.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <title>首页</title>
+</head>
+<body>
+<div class="container-fluid">
+    <!--头部-->
+    <div class="row center-block text-center">
+        <p class="h1 icon-bold">直营店飞远数据查询系统</p>
+    </div>
+    <!--头部-->
+    <div class="row center-block">
+        <div class="col-lg-2 text-center">
+            <!--导航条-->
+             <ul class="list-group">
+                 <li class="list-group-item"><a href="{% url 'flow' %}">销售明细查询</a> </li>
+                 <li class="list-group-item"><a href="#">销售统计</a> </li>
+                 <li class="list-group-item"><a href="#">销售统计</a> </li>
+                 <li class="list-group-item"><a href="#">销售统计</a> </li>
+                 <li class="list-group-item"><a href="#">销售统计</a> </li>
+             </ul>
+            <!--导航条-->
+        </div>
+        <div class="col-lg-8 text-center ">
+            <!--正文-->
+mmn
+            <!--正文-->
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

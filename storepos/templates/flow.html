@@ -1,0 +1,102 @@
+{% load staticfiles %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" name="viewpor" content="width=device-width">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <link href="{% static 'css/bootstrap-theme.min.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <title>销售主表</title>
+</head>
+<body>
+<div class="container-fluid">
+    <!--头部-->
+    <div class="row center-block text-center">
+        <p class="h1 icon-bold">直营店飞远数据查询系统</p>
+    </div>
+    <!--头部-->
+    <div class="row center-block">
+        <div class="col-lg-2 text-center">
+            <!--导航条-->
+             <ul class="list-group">
+                 <li class="list-group-item"><a href="{% url 'flow' %}">销售明细查询</a> </li>
+                 <li class="list-group-item"><a href="#">销售统计</a> </li>
+                 <li class="list-group-item"><a href="#">销售统计</a> </li>
+                 <li class="list-group-item"><a href="#">销售统计</a> </li>
+                 <li class="list-group-item"><a href="#">销售统计</a> </li>
+             </ul>
+            <!--导航条-->
+        </div>
+        <div class="col-lg-8 text-center ">
+            <!--正文-->
+           <div class="form-group">
+               <form class="form-group" METHOD="GET" action="{% url 'flow' %}">
+                   开始时间<input type="date" name="cx_sd">
+                   结束时间<input type="date" name="cx_ed">
+                  店铺 <select class="selector" name="cx_shop">
+                     {% for s in shop %}
+                       <option>{{ s.name }}</option>
+                      {% endfor %}
+{#                       <option>三元里</option>#}
+{#                      <option>白泥坑</option>#}
+{#                      <option>石溪</option>#}
+
+                   </select>
+               <button type="submit">提交</button>
+               </form>
+           </div>
+        {% if flow_list.has_previous %}
+            {% ifequal  cx_sd 'None'  %}
+            <a href="?page={{ flow_list.previous_page_number }}">上一页</a>
+            {% else %}
+            <a href="?page={{ flow_list.previous_page_number }}&cx_sd={{ cx_sd }}&cx_ed={{ cx_ed }}&cx_shop={{ cx_shop }}">上一页</a>
+            {% endifequal %}
+         {% endif %}
+        第 {{ flow_list.number }}页/共{{ flow_list.paginator.num_pages }}页
+         {% if flow_list.has_next %}
+             {% ifequal cx_sd 'None'  %}
+             <a href="?page={{ flow_list.next_page_number }}">下一页</a>
+                 {% else %}
+            <a href="?page={{ flow_list.next_page_number }}&cx_sd={{ cx_sd }}&cx_ed={{ cx_ed }}&cx_shop={{ cx_shop }}">下一页</a>
+            {% endifequal %}
+         {% endif %}
+        <table class="table table-bordered">
+            <tr></tr>
+        </table>
+        共{{ sum_orderid.order_id__count }}笔销售,合计销售总额：{{ sum_amount.order_saleamount__sum }}元
+            客单价：{% widthratio sum_amount.order_saleamount__sum  sum_orderid.order_id__count 2 %}元
+           <!--数据显示-->
+            <table class="table table-bordered">
+                   <tr>
+                       <td>销售单号</td>
+                       <td>店铺</td>
+                       <td>时间</td>
+                       <td>星期</td>
+                        <td>金额</td>
+                       <td>营业员</td>
+                   </tr>
+                  <!-- 数据显示-->
+             {% for f in flow_list %}
+              <tr>
+                <td>{{ f.order_id }}</td>
+              <td>{{ f.idstore__name }}</td>
+              <td>{{ f.order_data }}</td>
+              <td>{{ f.order_weekday }}</td>
+              <td>{{ f.order_saleamount }}</td>
+              <td>{{ f.idemployee__name }}</td>
+
+              </tr>
+             {% endfor %}
+            <!--正文-->
+            </table>
+
+        </div>
+    </div>
+</div>
+
+
+
+</body>
+</html>

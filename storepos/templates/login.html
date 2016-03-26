@@ -1,0 +1,30 @@
+{% load staticfiles %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+    <script src="{% static 'js/jquery-1.11.3.min.js' %}"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <title>登录</title>
+    <style type="text/css">
+        .form_single{
+            margin: 0 auto;
+            padding: 15px;
+            max-width: 220px;
+        }
+        input{margin-bottom: 3px;}
+    </style>
+</head>
+<body>
+<div class="container">
+
+    {% csrf_token %}
+    <form class="form_single" action="{% url 'login' %}" method="post">
+        {{ Login_form.username}}{{ Login_form.password }}
+     <button type="submit" class="btn   btn-block" >登录</button>
+</form>
+</div>
+
+</body>
+</html>
