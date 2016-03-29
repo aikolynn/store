@@ -23,7 +23,8 @@ def flow(request):
     cx_shop=request.GET.get('cx_shop')
     print cx_sd,cx_shop,cx_ed
     try:
-        if cx_sd==None and cx_ed==None:
+        #查询的起始及截止日期和店铺未给出，则默认查询所有数据
+        if cx_sd==None and cx_ed==None and cx_shop==None:
             print cx_ed,cx_sd,cx_shop
             #因数据最早从2006年开始，所以默认设置为2006-01-01
             cx_sd='2006-01-01'
@@ -34,21 +35,8 @@ def flow(request):
             flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed))
             sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Count('order_id'))
             sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Sum('order_saleamount'))
-        elif  cx_sd!='' and cx_ed!='' and cx_shop=='所有':
-            print 2
-            sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
-            ed=datetime.datetime.strptime(cx_ed,'%Y-%m-%d')
-            flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed))
-            sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Count('order_id'))
-            sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Sum('order_saleamount'))
-        elif  cx_sd!='' and cx_ed=='' and cx_shop=='所有':
-            print 10
-            sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
-            ed=datetime.datetime.strptime(cx_ed,'%Y-%m-%d')
-            flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed))
-            sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Count('order_id'))
-            sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Sum('order_saleamount'))
         else :
+            #查询的起始和截至日期及店铺都有值则执行以下语句
              print 1
              sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
              ed=datetime.datetime.strptime(cx_ed,'%Y-%m-%d')
@@ -56,6 +44,7 @@ def flow(request):
              sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed),idstore__name=cx_shop).aggregate(Count('order_id'))
              sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed),idstore__name=cx_shop).aggregate(Sum('order_saleamount'))
     except:
+        #如果有错误，以json格式将错误信息传递到前端，前端做AJAX处理
         pass
     flow_pagelist=Paginator(flow_list,100,)
     try:
@@ -64,6 +53,7 @@ def flow(request):
     except:
         flow_list=flow_pagelist.page(1)
     return render(request,'templates/flow.html',locals())
+
 #用户登录
 def do_login(request):
     try:
