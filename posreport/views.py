@@ -22,38 +22,41 @@ def flow(request):
     cx_ed=request.GET.get('cx_ed')
     cx_shop=request.GET.get('cx_shop')
     print cx_sd,cx_shop,cx_ed
-    if cx_sd==None and cx_ed==None:
-        print cx_ed,cx_sd,cx_shop
-        #因数据最早从2006年开始，所以默认设置为2006-01-01
-        cx_sd='2006-01-01'
-        sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
-        ed=datetime.datetime.now()
-        #将结束时间转为文本格式，以便分页传参
-        cx_ed=datetime.datetime.strftime(ed,'%Y-%m-%d')
-        flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed))
-        sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Count('order_id'))
-        sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Sum('order_saleamount'))
-    elif  cx_sd!='' and cx_ed!='' and cx_shop=='所有':
-        print 2
-        sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
-        ed=datetime.datetime.strptime(cx_ed,'%Y-%m-%d')
-        flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed))
-        sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Count('order_id'))
-        sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Sum('order_saleamount'))
-    elif  cx_sd!='' and cx_ed=='' and cx_shop=='所有':
-        print 10
-        sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
-        ed=datetime.datetime.strptime(cx_ed,'%Y-%m-%d')
-        flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed))
-        sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Count('order_id'))
-        sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Sum('order_saleamount'))
-    else :
-         print 1
-         sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
-         ed=datetime.datetime.strptime(cx_ed,'%Y-%m-%d')
-         flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed),idstore__name=cx_shop)
-         sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed),idstore__name=cx_shop).aggregate(Count('order_id'))
-         sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed),idstore__name=cx_shop).aggregate(Sum('order_saleamount'))
+    try:
+        if cx_sd==None and cx_ed==None:
+            print cx_ed,cx_sd,cx_shop
+            #因数据最早从2006年开始，所以默认设置为2006-01-01
+            cx_sd='2006-01-01'
+            sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
+            ed=datetime.datetime.now()
+            #将结束时间转为文本格式，以便分页传参
+            cx_ed=datetime.datetime.strftime(ed,'%Y-%m-%d')
+            flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed))
+            sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Count('order_id'))
+            sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Sum('order_saleamount'))
+        elif  cx_sd!='' and cx_ed!='' and cx_shop=='所有':
+            print 2
+            sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
+            ed=datetime.datetime.strptime(cx_ed,'%Y-%m-%d')
+            flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed))
+            sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Count('order_id'))
+            sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Sum('order_saleamount'))
+        elif  cx_sd!='' and cx_ed=='' and cx_shop=='所有':
+            print 10
+            sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
+            ed=datetime.datetime.strptime(cx_ed,'%Y-%m-%d')
+            flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed))
+            sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Count('order_id'))
+            sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Sum('order_saleamount'))
+        else :
+             print 1
+             sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
+             ed=datetime.datetime.strptime(cx_ed,'%Y-%m-%d')
+             flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed),idstore__name=cx_shop)
+             sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed),idstore__name=cx_shop).aggregate(Count('order_id'))
+             sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed),idstore__name=cx_shop).aggregate(Sum('order_saleamount'))
+    except:
+        pass
     flow_pagelist=Paginator(flow_list,100,)
     try:
         page=int(request.GET.get('page',1))
