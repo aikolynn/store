@@ -1,5 +1,5 @@
 #coding=utf-8
-from debug_toolbar.panels import logging
+# from debug_toolbar.panels import logging
 from django.db.models import *
 from django.shortcuts import render,HttpResponseRedirect,redirect
 from models import *
@@ -21,18 +21,39 @@ def flow(request):
     cx_sd=request.GET.get('cx_sd')
     cx_ed=request.GET.get('cx_ed')
     cx_shop=request.GET.get('cx_shop')
-    print cx_sd,cx_ed,cx_shop
-    if cx_sd==None and cx_ed==None or cx_shop==None:
-        sd=datetime.datetime.today()
-        # print cx_sd
-        # sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
+    print cx_sd,cx_shop,cx_ed
+    if cx_sd==None and cx_ed==None:
+        print cx_ed,cx_sd,cx_shop
+        #因数据最早从2006年开始，所以默认设置为2006-01-01
+        cx_sd='2006-01-01'
+        sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
         ed=datetime.datetime.now()
-    else:
+        #将结束时间转为文本格式，以便分页传参
+        cx_ed=datetime.datetime.strftime(ed,'%Y-%m-%d')
+        flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed))
+        sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Count('order_id'))
+        sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Sum('order_saleamount'))
+    elif  cx_sd!='' and cx_ed!='' and cx_shop=='所有':
+        print 2
         sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
         ed=datetime.datetime.strptime(cx_ed,'%Y-%m-%d')
-    flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed),idstore__name=cx_shop)
-    sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed),idstore__name=cx_shop).aggregate(Count('order_id'))
-    sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed),idstore__name=cx_shop).aggregate(Sum('order_saleamount'))
+        flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed))
+        sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Count('order_id'))
+        sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Sum('order_saleamount'))
+    elif  cx_sd!='' and cx_ed=='' and cx_shop=='所有':
+        print 10
+        sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
+        ed=datetime.datetime.strptime(cx_ed,'%Y-%m-%d')
+        flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed))
+        sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Count('order_id'))
+        sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed)).aggregate(Sum('order_saleamount'))
+    else :
+         print 1
+         sd=datetime.datetime.strptime(cx_sd,'%Y-%m-%d')
+         ed=datetime.datetime.strptime(cx_ed,'%Y-%m-%d')
+         flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed),idstore__name=cx_shop)
+         sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed),idstore__name=cx_shop).aggregate(Count('order_id'))
+         sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed),idstore__name=cx_shop).aggregate(Sum('order_saleamount'))
     flow_pagelist=Paginator(flow_list,100,)
     try:
         page=int(request.GET.get('page',1))
@@ -40,7 +61,7 @@ def flow(request):
     except:
         flow_list=flow_pagelist.page(1)
     return render(request,'templates/flow.html',locals())
-
+#用户登录
 def do_login(request):
     try:
         if request.method=="POST":
@@ -48,18 +69,12 @@ def do_login(request):
             if Login_form.is_valid():
                 username=Login_form.cleaned_data["username"]
                 password=Login_form.cleaned_data["password"]
-                print username,password
                 user=auth.authenticate(username=username,password=password)
-                print 1,user
                 if user is not None:
                     user.backend = 'django.contrib.auth.backends.ModelBackend'
-                    print 2
                     login(request,user)
-                    print 5
                 else:
                     return HttpResponseRedirect("/do_login/")
-                    print 3
-                print 4
                 return HttpResponseRedirect("/flow/")
             else:
                  return redirect(reverse('posreport.views.do_login'))
