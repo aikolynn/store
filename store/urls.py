@@ -20,5 +20,7 @@ urlpatterns = [
     url(r'^admin/', include(admin.site.urls)),
     url(r'^index/',index, name='index'),
     url(r'^flow/',flow, name='flow'),
+    url(r'^sale_flow/', sale_flow, name='sale_flow'),
+    url(r'^logout/',do_logout,name='logout'),
     url(r'$',do_login,name='login')
 ]

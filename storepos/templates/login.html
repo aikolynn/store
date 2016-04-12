@@ -21,7 +21,7 @@
 
     {% csrf_token %}
     <form class="form_single" action="{% url 'login' %}" method="post">
-        {{ Login_form.username}}{{ Login_form.password }}
+        登录帐号：{{ Login_form.username}}登录口令：{{ Login_form.password }}
      <button type="submit" class="btn   btn-block" >登录</button>
 </form>
 </div>

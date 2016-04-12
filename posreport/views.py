@@ -21,6 +21,7 @@ def flow(request):
     cx_sd=request.GET.get('cx_sd')
     cx_ed=request.GET.get('cx_ed')
     cx_shop=request.GET.get('cx_shop')
+    current_time=datetime.datetime.now()
     print cx_sd,cx_shop,cx_ed
     if cx_sd==None and cx_ed==None:
         print cx_ed,cx_sd,cx_shop
@@ -54,13 +55,26 @@ def flow(request):
          flow_list=OrderMain.objects.values('order_id','idstore__name','order_data','order_weekday','order_saleamount','idemployee__name').filter(order_data__range=(sd,ed),idstore__name=cx_shop)
          sum_orderid=OrderMain.objects.filter(order_data__range=(sd,ed),idstore__name=cx_shop).aggregate(Count('order_id'))
          sum_amount=OrderMain.objects.filter(order_data__range=(sd,ed),idstore__name=cx_shop).aggregate(Sum('order_saleamount'))
-    flow_pagelist=Paginator(flow_list,100,)
+    flow_pagelist=Paginator(flow_list,30,)
     try:
         page=int(request.GET.get('page',1))
         flow_list=flow_pagelist.page(page)
     except:
         flow_list=flow_pagelist.page(1)
     return render(request,'templates/flow.html',locals())
+
+
+#销售明细
+def sale_flow(request):
+    shop = Store.objects.all()
+    cxdate=request.GET.get('cxdate')
+    cxshop=request.GET.get('cx_shop')
+    print cxshop,cxdate
+    sale_base=order_flow.objects.all().filter(id_order__order_data=cxdate,id_order__idstore__name=cxshop)
+    return  render(request,'templates/sale_flow.html',locals())
+
+
+
 #用户登录
 def do_login(request):
     try:
@@ -72,6 +86,7 @@ def do_login(request):
                 user=auth.authenticate(username=username,password=password)
                 if user is not None:
                     user.backend = 'django.contrib.auth.backends.ModelBackend'
+                    request.session['member_id']=user.id
                     login(request,user)
                 else:
                     return HttpResponseRedirect("/do_login/")
@@ -84,3 +99,9 @@ def do_login(request):
         # logger.error(e)
         pass
     return render(request,'templates/login.html',locals())
+def do_logout(request):
+     try:
+         logout(request)
+     except:
+         pass
+     return HttpResponseRedirect("/login/")
