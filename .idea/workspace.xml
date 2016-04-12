@@ -4,17 +4,8 @@
     <bookmark url="file://$PROJECT_DIR$/storepos/templates/flow.html" line="5" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b7692e4d-dad4-4d12-b345-37ac27ae541d" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/storepos/templates/base.html" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/storepos/templates/sale_flow.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/store.iml" afterPath="$PROJECT_DIR$/.idea/store.iml" />
+    <list default="true" id="b7692e4d-dad4-4d12-b345-37ac27ae541d" name="Default" comment="销售明细查询">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/posreport/views.py" afterPath="$PROJECT_DIR$/posreport/views.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/store/settings.py" afterPath="$PROJECT_DIR$/store/settings.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/store/urls.py" afterPath="$PROJECT_DIR$/store/urls.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/storepos/templates/flow.html" afterPath="$PROJECT_DIR$/storepos/templates/flow.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/storepos/templates/login.html" afterPath="$PROJECT_DIR$/storepos/templates/login.html" />
     </list>
     <ignored path="store.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -28,7 +19,7 @@
   </component>
   <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
   <component name="CreatePatchCommitExecutor">
-    <option name="PATCH_PATH" value="" />
+    <option name="PATCH_PATH" value="E:\personal\pythonproject\code\store" />
   </component>
   <component name="DatabaseView">
     <option name="FLATTEN" value="false" />
@@ -291,7 +282,6 @@
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../env/storeenv/storeenv/Scripts/python.exe" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="recentsLimit" value="5" />
-    <property name="FullScreen" value="false" />
     <property name="DefaultHtmlFileTemplate" value="HTML File" />
   </component>
   <component name="RecentsManager">
@@ -580,11 +570,19 @@
       <option name="presentableId" value="Default" />
       <updated>1454387097205</updated>
     </task>
+    <task id="LOCAL-00001" summary="销售明细查询">
+      <created>1460455825540</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1460455825540</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1456" height="876" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17986111" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -592,7 +590,7 @@
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32924962" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32988507" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.20156047" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.20156047" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -640,6 +638,10 @@
   </component>
   <component name="VcsContentAnnotationSettings">
     <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="销售明细查询" />
+    <option name="LAST_COMMIT_MESSAGE" value="销售明细查询" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
