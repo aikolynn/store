@@ -1,4 +1,14 @@
 {% extends 'templates/base.html' %}
+{% block authreg %}
+    {% if user.is_authenticated %}
+             <a href="{% url 'logout' %}">注销</a>
+            {% else %}
+             <script language='javascript'>document.location = '{% url 'login' %} '</script>
+{% endif %}
+{% endblock %}
+{% block title %}
+    销售明细
+{% endblock %}
 {% block context %}
       <div class="form-group">
                    <form class="form-group" METHOD="GET" action="{% url 'sale_flow' %}">
@@ -23,7 +33,10 @@
                <td>存货名称</td>
                <td>数量</td>
                <td>销售价</td>
+               <td>销售金额</td>
                <td>零售价</td>
+               <td>零售金额</td>
+               <td>折扣</td>
            </tr>
            {% for a in sale_base %}
                <tr>
@@ -31,7 +44,14 @@
                  <td>{{ a.inventory_name }}</td>
                <td>{{ a.quantity }}</td>
                <td>{{ a.saleprice }}</td>
+                <td>{% widthratio a.saleprice 1.00 a.quantity  %}</td>
+                   <!--以上表达式会导致四舍五入，待解决-->
                <td>{{ a.retailprice }}</td>
+               <td>{% widthratio a.retailprice 1.00 a.quantity  %}</td>
+                    <!--以上表达式会导致四舍五入，待解决-->
+                <td>{% widthratio a.saleprice a.retailprice 1  %}</td>
+                <!--以上表达式会导致四舍五入，待解决-->
+                <td>{{ a.id_order__idstore__name }}</td>
                </tr>
            {% endfor %}
        </table>

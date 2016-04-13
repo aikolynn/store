@@ -70,7 +70,8 @@ def sale_flow(request):
     cxdate=request.GET.get('cxdate')
     cxshop=request.GET.get('cx_shop')
     print cxshop,cxdate
-    sale_base=order_flow.objects.all().filter(id_order__order_data=cxdate,id_order__idstore__name=cxshop)
+    # sercher_name="'inventory_code','inventory_name','id_order__idemployee__name','id_order__order_id','id_order__idstore__name'"
+    sale_base=order_flow.objects.filter(id_order__order_data=cxdate,id_order__idstore__name=cxshop).values('quantity','retailprice','saleprice','inventory_code','inventory_name','id_order__idemployee__name','id_order__order_id','id_order__idstore__name')
     return  render(request,'templates/sale_flow.html',locals())
 
 
@@ -90,7 +91,7 @@ def do_login(request):
                     login(request,user)
                 else:
                     return HttpResponseRedirect("/do_login/")
-                return HttpResponseRedirect("/flow/")
+                return HttpResponseRedirect("/welcome/")
             else:
                  return redirect(reverse('posreport.views.do_login'))
         else:
@@ -99,9 +100,16 @@ def do_login(request):
         # logger.error(e)
         pass
     return render(request,'templates/login.html',locals())
+def welcome(request):
+    return  render(request,'templates/welcome.html')
+
 def do_logout(request):
      try:
          logout(request)
      except:
          pass
      return HttpResponseRedirect("/login/")
+
+def chart(request):
+    list=OrderMain.objects.all().annotate()
+    return render(request,'templates/charts/empoylee.html',locals())

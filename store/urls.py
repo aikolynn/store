@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^flow/',flow, name='flow'),
     url(r'^sale_flow/', sale_flow, name='sale_flow'),
     url(r'^logout/',do_logout,name='logout'),
+    url(r'^welcome/', welcome, name='welcome'),
     url(r'$',do_login,name='login')
 ]
