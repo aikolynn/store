@@ -13,14 +13,12 @@
       <div class="form-group">
                    <form class="form-group" METHOD="GET" action="{% url 'sale_flow' %}">
                      <!--查询日期-->
-                      <span class="glyphicon glyphicon-calendar"></span> <input type="date" name="cxdate">
+                      <span class="glyphicon glyphicon-calendar"></span> <input type="date" name="cxdate" value="2016/4/14">
                       <!--查询店铺-->
                       <span class="glyphicon glyphicon-home"> </span>
-                       <select class="selector" name="cx_shop">
-                        <option>所有</option>
                          {% for s in shop %}
-                           <option>{{ s.name }}</option>
-                          {% endfor %}
+                          <input type="radio" name="cx_shop" value="{{ s.name }}">{{ s.name }}
+                        {% endfor %}
                         </select>
                        <button type="submit"><span class="glyphicon glyphicon-check"></span></button>
                    </form>
@@ -37,6 +35,9 @@
                <td>零售价</td>
                <td>零售金额</td>
                <td>折扣</td>
+               <td>店铺</td>
+               <td>流水号</td>
+                <td>日期</td>
            </tr>
            {% for a in sale_base %}
                <tr>
@@ -52,6 +53,8 @@
                 <td>{% widthratio a.saleprice a.retailprice 1  %}</td>
                 <!--以上表达式会导致四舍五入，待解决-->
                 <td>{{ a.id_order__idstore__name }}</td>
+               <td>{{ a.id_order__order_id }}</td>
+               <td>{{ a.id_order__order_data }}</td>
                </tr>
            {% endfor %}
        </table>

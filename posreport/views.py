@@ -1,7 +1,7 @@
 #coding=utf-8
 # from debug_toolbar.panels import logging
 from django.db.models import *
-from django.shortcuts import render,HttpResponseRedirect,redirect
+from django.shortcuts import render,HttpResponseRedirect,redirect,HttpResponse
 from models import *
 from django.core.urlresolvers import reverse
 from django.core.paginator import *
@@ -66,16 +66,24 @@ def flow(request):
 
 #销售明细
 def sale_flow(request):
-    shop = Store.objects.all()
-    cxdate=request.GET.get('cxdate')
-    cxshop=request.GET.get('cx_shop')
-    print cxshop,cxdate
-    # sercher_name="'inventory_code','inventory_name','id_order__idemployee__name','id_order__order_id','id_order__idstore__name'"
-    sale_base=order_flow.objects.filter(id_order__order_data=cxdate,id_order__idstore__name=cxshop).values('quantity','retailprice','saleprice','inventory_code','inventory_name','id_order__idemployee__name','id_order__order_id','id_order__idstore__name')
-    return  render(request,'templates/sale_flow.html',locals())
+    if request.method =='GET':
+        shop = Store.objects.all()
+        cxdate=request.GET.get('cxdate')
+        cxshop=request.GET.get('cx_shop')
+        print cxshop,cxdate
+        sale_base=order_flow.objects.filter(id_order__order_data=cxdate,id_order__idstore__name=cxshop).values('id_order__order_data','quantity','retailprice','saleprice','inventory_code','inventory_name','id_order__idemployee__name','id_order__order_id','id_order__idstore__name')
+        return  render(request,'templates/sale_flow.html',locals())
 
+def sale_flow1(request):
+        shop = Store.objects.all()
+        if request.method == 'GET':
+                cxdate = request.GET.get('cxdate')
+                cxshop = request.GET.get('cxshop')
+                print cxshop, cxdate
+                com="表单测试成功"
 
-
+                # sale_base = order_flow.objects.filter(id_order__order_data=cxdate,id_order__idstore__name=cxshop).values('quantity', 'retailprice',  'saleprice','inventory_code', 'inventory_name', 'id_order__idemployee__name', 'id_order__order_id', 'id_order__idstore__name')
+                return render(request,'templates/sale_flow1.html',{com:com})
 #用户登录
 def do_login(request):
     try:
